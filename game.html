@@ -1,0 +1,58 @@
+<html>
+<!-- https://opengameart.org/content/classic-knight-animated -->
+<img src="./Old-hero-Edit.gif" id="ss" />
+
+<canvas id="c" width="800" height="600"></canvas>
+
+<script>
+var c;
+var cc;
+var ss;
+var px = 100;
+var py = 100;
+var pdx = 0;
+var pdy = 0;
+var ps = 10;
+
+window.onload = function() {
+	c = document.getElementById('c');
+	cc = c.getContext('2d');
+	ss = document.getElementById('ss');
+	setInterval(draw, 100);
+}
+
+document.addEventListener('keydown', (event) => {
+	const keyCode = event.keyCode;
+	switch (keyCode) {
+		case 37: pdx = -1; break;
+		case 38: pdy = -1; break;
+		case 39: pdx = 1; break;
+		case 40: pdy = 1; break;
+		default:break;
+	}
+}, false);
+
+document.addEventListener('keyup', (event) => {
+        const keyCode = event.keyCode;
+        switch (keyCode) {
+                case 37: pdx = 0; break;
+                case 38: pdy = 0; break;
+                case 39: pdx = 0; break;
+                case 40: pdy = 0; break;
+                default:break;
+        }
+}, false);
+
+function draw() {
+	px = px + pdx * ps;
+	py = py + pdy * ps;
+        // background
+	cc.fillStyle = 'black';
+        cc.fillRect(0,0,c.width,c.height);
+	// draw below
+	cc.drawImage(ss, 10, 5, 20, 20, px, py, 100, 100);
+}
+
+</script>
+
+</html>
