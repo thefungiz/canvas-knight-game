@@ -43,9 +43,13 @@ document.addEventListener('keyup', (event) => {
         }
 }, false);
 
+function update() {
+        px = px + pdx * ps;
+        py = py + pdy * ps;
+}
+
 function draw() {
-	px = px + pdx * ps;
-	py = py + pdy * ps;
+	this.update();
         // background
 	cc.fillStyle = 'black';
         cc.fillRect(0,0,c.width,c.height);
