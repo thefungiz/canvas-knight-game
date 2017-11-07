@@ -12,18 +12,26 @@ var px = 100; // player x
 var py = 100; // player y
 var pdx = 0; // player delta x
 var pdy = 0; // player delta y
-var ps = 10; // player speed
+var ps = 1; // player speed
+var sword = false;
+// subimageX, subImagey, subImageWidth, subImageHeight  
+var sm = [ // sprite map
+{sx: 12, sy: 5, sw: 20, sh: 20, dw: 100, dh: 100}, // normal
+{sx: 57, sy: 97, sw: 40, sh: 20, dw: 200, dh: 100}  // sword
+];
+var cs = sm[0]; //current sprite
 
 window.onload = function() {
 	c = document.getElementById('c');
 	cc = c.getContext('2d');
 	ss = document.getElementById('ss');
-	setInterval(draw, 100);
+	setInterval(draw, 1);
 }
 
 document.addEventListener('keydown', (event) => {
 	const keyCode = event.keyCode;
 	switch (keyCode) {
+		case 32: sword = true; break;
 		case 37: pdx = -1; break;
 		case 38: pdy = -1; break;
 		case 39: pdx = 1; break;
@@ -35,6 +43,7 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
         const keyCode = event.keyCode;
         switch (keyCode) {
+		case 32: sword = false; break;
                 case 37: pdx = 0; break;
                 case 38: pdy = 0; break;
                 case 39: pdx = 0; break;
@@ -46,6 +55,11 @@ document.addEventListener('keyup', (event) => {
 function update() {
         px = px + pdx * ps;
         py = py + pdy * ps;
+	if (sword) {
+		cs = sm[1];
+	} else {
+		cs = sm[0];
+	}
 }
 
 function draw() {
@@ -53,8 +67,9 @@ function draw() {
         // background
 	cc.fillStyle = 'black';
         cc.fillRect(0,0,c.width,c.height);
+
 	// draw below
-	cc.drawImage(ss, 10, 5, 20, 20, px, py, 100, 100);
+	cc.drawImage(ss, cs.sx, cs.sy, cs.sw, cs.sh, px, py, cs.dw, cs.dh);
 }
 
 </script>
