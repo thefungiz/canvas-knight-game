@@ -25,23 +25,23 @@ var animationSM = [sm[0], sm[1]];
 var cs = sm[0]; //current sprite
 var bucket = 0;
 var threshold = 50;
-var walking = false;
 
 window.onload = function() {
 	c = document.getElementById('c');
 	cc = c.getContext('2d');
 	ss = document.getElementById('ss');
 	setInterval(draw, 1);
+	console.log("width:" + ss.width + " and height: " + ss.height);
 }
 
 document.addEventListener('keydown', (event) => {
 	const keyCode = event.keyCode;
 	switch (keyCode) {
 		case 32: sword = true; break;
-		case 37: pdx = -1; walking = true; break;
-		case 38: pdy = -1; walking = true;break;
-		case 39: pdx = 1; walking = true;break;
-		case 40: pdy = 1; walking = true;break;
+		case 37: pdx = -1; break;
+		case 38: pdy = -1;break;
+		case 39: pdx = 1;break;
+		case 40: pdy = 1;break;
 		default:break;
 	}
 }, false);
@@ -50,10 +50,10 @@ document.addEventListener('keyup', (event) => {
         const keyCode = event.keyCode;
         switch (keyCode) {
 		case 32: sword = false; break;
-                case 37: pdx = 0; walking = false;break;
-                case 38: pdy = 0; walking = false;break;
-                case 39: pdx = 0; walking = false;break;
-                case 40: pdy = 0; walking = false;break;
+                case 37: pdx = 0;break;
+                case 38: pdy = 0;break;
+                case 39: pdx = 0; break;
+                case 40: pdy = 0; break;
                 default:break;
         }
 }, false);
@@ -63,7 +63,7 @@ function update() {
         py = py + pdy * ps;
 	if (sword) {
 		cs = sm[2];
-	} else if (walking) {
+	} else if (pdx !== 0 || pdy !== 0) {
 		if (bucket < threshold) {
 			bucket++;
 		} else {
