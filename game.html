@@ -18,9 +18,14 @@ var sword = false;
 // subimageX, subImagey, subImageWidth, subImageHeight  
 var sm = [ // sprite map
 {sx: 12, sy: 5, sw: 20, sh: 20, dw: 100, dh: 100}, // normal
+{sx: 12, sy: 25, sw: 20, sh: 20, dw: 100, dh: 100}, // normal 2
 {sx: 57, sy: 97, sw: 40, sh: 20, dw: 200, dh: 100}  // sword
 ];
+var animationSM = [sm[0], sm[1]];
 var cs = sm[0]; //current sprite
+var bucket = 0;
+var threshold = 50;
+var walking = false;
 
 window.onload = function() {
 	c = document.getElementById('c');
@@ -33,10 +38,10 @@ document.addEventListener('keydown', (event) => {
 	const keyCode = event.keyCode;
 	switch (keyCode) {
 		case 32: sword = true; break;
-		case 37: pdx = -1; break;
-		case 38: pdy = -1; break;
-		case 39: pdx = 1; break;
-		case 40: pdy = 1; break;
+		case 37: pdx = -1; walking = true; break;
+		case 38: pdy = -1; walking = true;break;
+		case 39: pdx = 1; walking = true;break;
+		case 40: pdy = 1; walking = true;break;
 		default:break;
 	}
 }, false);
@@ -45,10 +50,10 @@ document.addEventListener('keyup', (event) => {
         const keyCode = event.keyCode;
         switch (keyCode) {
 		case 32: sword = false; break;
-                case 37: pdx = 0; break;
-                case 38: pdy = 0; break;
-                case 39: pdx = 0; break;
-                case 40: pdy = 0; break;
+                case 37: pdx = 0; walking = false;break;
+                case 38: pdy = 0; walking = false;break;
+                case 39: pdx = 0; walking = false;break;
+                case 40: pdy = 0; walking = false;break;
                 default:break;
         }
 }, false);
@@ -57,10 +62,25 @@ function update() {
         px = px + pdx * ps;
         py = py + pdy * ps;
 	if (sword) {
-		cs = sm[1];
+		cs = sm[2];
+	} else if (walking) {
+		if (bucket < threshold) {
+			bucket++;
+		} else {
+			var i = animationSM.indexOf(cs);
+			console.log(i);
+			if (i + 1 >= animationSM.length) {
+				i = 0;
+			} else {
+				i++;
+			}
+			cs = animationSM[i];
+			bucket = 0;
+		}
 	} else {
 		cs = sm[0];
 	}
+
 }
 
 function draw() {
